@@ -3,6 +3,8 @@ $(document).ready(() => {
   const newPost = document.getElementById("newPost");
   const ajaxUrl = "/meta/ajax_update_instagram/";
   const postModalBody = document.getElementById("postModalBody");
+  const postModal = document.getElementById("postModal");
+  const postModalElem = new bootstrap.Modal(postModal);
 
   /* Toast Element */
   const createModalDiv = document.getElementById("postCreate");
@@ -34,9 +36,14 @@ $(document).ready(() => {
     $("#" + id).toggleClass("active");
   }
 
-  /* getRequest Ajax */
+  /* putRequest Ajax */
   function putRequest(data, url, extraArguments) {
     ajaxCall("PUT", data, url, getCsrf(), extraArguments);
+  }
+
+  /* getRequest Ajax */
+  function getRequest(data, url, extraArguments) {
+    ajaxCall("GET", data, url, getCsrf(), extraArguments);
   }
 
   /* Ajax Call & Response Handling */
@@ -54,6 +61,7 @@ $(document).ready(() => {
       success: function (content, status, xhr) {
         if (type != "PUT") {
           if (xhr.status == 200) {
+            console.log(data.type);
             newPost.innerHTML = content + newPost.innerHTML;
           } else {
             let newComment = $("#newComment-" + data.get("id"))[0];
@@ -77,6 +85,7 @@ $(document).ready(() => {
       error: function (xhr, error, status) {
         if (extraArguments) {
           btnDisableToggle(extraArguments);
+          BtnActiveClassToggle(extraArguments);
         }
         console.error(
           `An Error Occured with Status ${status} ${xhr.status}, ${xhr.responseText}`
@@ -88,6 +97,26 @@ $(document).ready(() => {
       },
     });
   }
+
+  // function ajaxCallWithoutForm(type, data, url, csrfToken) {
+  //   $.ajax({
+  //     url: url,
+  //     type: type,
+  //     data: data,
+  //     headers: {
+  //       "X-CSRFToken": csrfToken,
+  //     },
+  //     success: function (content, status, xhr) {
+  //       postModalBody.innerHTML = content;
+  //       postModalElem.show();
+  //     },
+  //     error: function (xhr, error, status) {
+  //       console.error(
+  //         `An Error Occured with Status ${status} ${xhr.status}, ${xhr.responseText}`
+  //       );
+  //     },
+  //   });
+  // }
 
   /* Feed Instagram Update */
   $("#feedInstagram").click((event) => {
@@ -147,34 +176,13 @@ $(document).ready(() => {
     putRequest(JSON.stringify(data), ajaxUrl, id);
   });
 
-  /* Profile Post Modal */
-  function ajaxCallWithoutForm(type, data, url, csrfToken) {
-    $.ajax({
-      url: url,
-      type: type,
-      data: data,
-      headers: {
-        "X-CSRFToken": csrfToken,
-      },
-      success: function (content, status, xhr) {
-        const postModal = document.getElementById("postModal");
-        const postModalElem = new bootstrap.Modal(postModal);
-        postModalBody.innerHTML = content;
-        postModalElem.show();
-      },
-      error: function (xhr, error, status) {
-        console.error(
-          `An Error Occured with Status ${status} ${xhr.status}, ${xhr.responseText}`
-        );
-      },
-    });
-  }
-  $(".profile_posts").click((event) => {
-    event.preventDefault();
-    const id = event.target.closest("a").id;
-    data = { id: id, type: "post_modal" };
-    ajaxCallWithoutForm("POST", data, ajaxUrl, getCsrf());
-  });
+  // /* Profile Post Modal */
+  // $(".profile_posts").click((event) => {
+  //   event.preventDefault();
+  //   const id = event.target.closest("a").id;
+  //   data = { id: id, type: "post_modal" };
+  //   ajaxCallWithoutForm("POST", data, ajaxUrl, getCsrf());
+  // });
 
   /* Post Description Collapse Text Toggle */
   $(".feed-title-toggle").click((elem) => {

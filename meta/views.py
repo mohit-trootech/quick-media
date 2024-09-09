@@ -25,6 +25,7 @@ from meta.utils.constants import (
     POSTS,
     COMMENTS,
     FOLLOWERS,
+    POST_MODAL,
 )
 from meta.models import Post
 from accounts.models import User
@@ -40,6 +41,7 @@ from meta.utils.utils import (
     post_object_create,
     create_post_images_object,
     update_following_list,
+    get_post_with_id,
 )
 from typing import Any
 
@@ -61,8 +63,8 @@ class Instagram(TemplateView):
 class AjaxUpdateInstagram(View):
 
     def post(self, request):
-        type = request.POST.get(TYPE)
-        if type == CREATE:
+        post_type = request.POST.get(TYPE)
+        if post_type == CREATE:
             title, images = get_create_form_data(request)
             try:
                 file_type_check_for_image(images=images)
@@ -76,28 +78,38 @@ class AjaxUpdateInstagram(View):
                 return HttpResponse(page.content, status=200)
             except AssertionError:
                 return HttpResponseForbidden(Errors.ASSERTION_ERROR_MESSAGE.value)
-        elif type == COMMENT:
+        elif post_type == COMMENT:
             comment = create_post_comment(self, request.POST)
             page = render(
                 request, TemplateNames.COMMENT_CARD_TEMPLATE.value, {COMMENT: comment}
             )
             return HttpResponse(page.content, status=201)
-        return HttpResponse(status=200)
+        elif post_type == POST_MODAL:
+            post = get_post_with_id(id=request.POST.get(ID))
+            page = render(request, TemplateNames.POST_CARD_TEMPLATE.value, {POST: post})
+            return HttpResponse(page.content, status=200)
+        return HttpResponse(status=400)
 
     def put(self, request):
         from json import loads
 
-        data = loads(request.body)
-        if data.get(TYPE) == LIKE:
-            if check_if_user_already_liked_post(self, data.get(ID)):
-                return JsonResponse({STATUS: 204})
-        elif data.get(TYPE) == SAVED:
-            if check_if_user_saved_post(self, data.get(ID)):
-                return JsonResponse({STATUS: 204})
-        elif data.get(TYPE) == FOLLOWING:
-            update_following_list(request, data.get(ID))
-            return HttpResponse(status=205)
-        return JsonResponse({STATUS: 200})
+        try:
+            data = loads(request.body)
+            action_type = data.get(TYPE)
+            post_id = data.get(ID)
+            if action_type == LIKE:
+                if check_if_user_already_liked_post(self, post_id):
+                    return JsonResponse({STATUS: 204})
+            elif action_type == SAVED:
+                if check_if_user_saved_post(self, data.get(ID)):
+                    return JsonResponse({STATUS: 204})
+            elif action_type == FOLLOWING:
+                update_following_list(request, data.get(ID))
+                return HttpResponse(status=205)
+            else:
+                return HttpResponse(status=400)
+        except Exception as e:
+            return HttpResponse(status=500)
 
 
 class ProfileView(UpdateView):

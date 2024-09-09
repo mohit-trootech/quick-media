@@ -2,7 +2,7 @@
 <div class="card my-3" id="post_{{post.id}}">
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{% url 'instagram-username-profile' post.user %}">
+            <a href="{% url 'instagram-username-profile' post.user %}" class="text-decoration-none">
                 {% if post.user.profile %}
                 <img src="{{post.user.profile.url}}" class="rounded-circle me-2 object-fit-cover" height="35"
                     width="35" />

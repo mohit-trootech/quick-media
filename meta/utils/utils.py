@@ -133,3 +133,4 @@ def update_following_list(request, id):
         request.user.followers.remove(user)
     except User.DoesNotExist:
         request.user.followers.add(user)
+
