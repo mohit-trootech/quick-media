@@ -2,14 +2,18 @@ asgiref==3.8.1
 attrs==24.2.0
 black==24.8.0
 cattrs==23.2.3
+certifi==2024.8.30
+charset-normalizer==3.3.2
 click==8.1.7
 Django==5.1
 django-database-url==1.0.3
 django-debug-toolbar==4.4.6
 django-extensions==3.2.3
+django-login-required-middleware==0.9.0
 django-phonenumber-field==8.0.0
 django-schema-graph==3.1.0
 Faker==28.0.0
+idna==3.8
 mypy-extensions==1.0.0
 packaging==24.1
 pathspec==0.12.1
@@ -19,6 +23,8 @@ platformdirs==4.2.2
 psycopg==3.2.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+requests==2.32.3
 six==1.16.0
 sqlparse==0.5.1
 typing_extensions==4.12.2
+urllib3==2.2.2

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Youtube{% endblock %}
+{% block favicon %}
+<link rel="shortcut icon" href="{% static 'img/logo-youtube.png' %}" type="image/x-icon">
+{% endblock %}
+
+{% block main-content %}
+<div id="youtubeMain">
+    {% include "youtube/youtube-nav.html" %}
+    {% include "youtube/youtube-sidebar.html" %}
+    {% block content %}
+    {% endblock %}
+</div>
+<script src="{% static 'js/youtube.js' %}"></script>
+{% endblock %}

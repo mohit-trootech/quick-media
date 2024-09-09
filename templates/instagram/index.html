@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Instagram{% endblock %}
+{% block favicon %}
+<link rel="shortcut icon" href="{% static 'img/logo-instagram.webp' %}" type="image/x-icon">
+{% endblock %}
+
+{% block main-content %}
+<div class="row m-0 p-0">
+    {% include 'instagram/nav.html' %}
+    <div class="row m-0 p-0">
+        <div class="col-md-4 d-sm-none d-md-block">
+            {% include 'instagram/sidebar.html' %}
+        </div>
+        <div class="col-md-8 col-sm-12">
+            {% block content %}
+            <div id="instagramMain">
+                <div id="newPost"></div>
+                {% for post in posts %}
+                {% include 'instagram/home-page.html' %}
+                {% endfor %}
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% include "instagram/create.html" %}
+<script src="{% static 'js/meta.js' %}"></script>
+{% endblock %}

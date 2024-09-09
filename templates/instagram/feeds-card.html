@@ -1,0 +1,46 @@
+{% load custom_tags %}
+<div class="card my-3" id="post_{{post.id}}">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{% url 'instagram-username-profile' post.user %}">
+                {% if post.user.profile %}
+                <img src="{{post.user.profile.url}}" class="rounded-circle me-2 object-fit-cover" height="35"
+                    width="35" />
+                {% else %}
+                <img src="https://picsum.photos/200/300" class="rounded-circle me-2 object-fit-cover"
+                    style="width: 35px; height: 35px;" />
+                {% endif %}
+                <strong>{{post.user.username}}</strong>
+            </a>
+            <strong><i class="fas fa-ellipsis"></i></strong>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="post-details">
+            {% if post.images.all.count > 1 %}
+            {% include "instagram/image-carousel.html" %}
+            {% else %}
+            {% for image in post.images.all %}
+            <img src="{{image.image.url}}" class="w-100" />
+            {% endfor %}
+            {% endif %}
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <a type="button" id="like-{{post.id}}" href="like/{{post.id}}"
+                    class="far btn btn-outline-primary {% post_liked_by_user request.user.id post %} text-decoration-none fa-heart me-3"></a>
+                <a type="button" id="saved-{{post.id}}" href="bookmark/{{post.id}}"
+                    class="far btn btn-outline-primary {% post_saved_by_user request.user.id post %} text-decoration-none fa-bookmark"></a>
+            </div>
+            <div class="description">
+                {% include "instagram/post-text-trunacate.html" with post=post %}
+                <a data-bs-toggle="collapse" href="#postText_{{post.id}}"
+                    class="text-decoration-none feed-title-toggle">Show More</a>
+            </div>
+        </div>
+        <div class="comments">
+            {% include 'instagram/comments.html' %}
+        </div>
+    </div>
+    <div class="card-footer">
+        Recently
+    </div>
+</div>

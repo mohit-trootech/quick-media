@@ -1,0 +1,17 @@
+<div id="carousel_{{post.id}}" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    {% for image in post.images.all %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="5000">
+      <img src="{{image.image.url}}" class="d-block w-100 object-fit-cover" width="854" height="480" alt="...">
+    </div>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carousel_{{post.id}}" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carousel_{{post.id}}" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>

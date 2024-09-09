@@ -1,0 +1,69 @@
+{% load static %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="youtubeSideCanvas" aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header">
+        <a href="{% url 'youtube-home' %}" class="">
+            <img src="{% static 'img/logo-youtube-dark.webp' %}" height="35" />
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="card" id="sidebar">
+            <div class="card-header">
+                <div class="d-flex align-items-center text-decoration-none">
+                    <div class="card-body text-center">
+                        {% if request.user.is_authenticated %}
+                        <div class="card-body text-center">
+                            <!-- img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" -->
+                            {% if user.profile %}
+                            <img src="{{user.profile.url}}" alt="avatar"
+                                class="rounded-circle img-fluid border border-3 p-2" style="width: 150px;">
+                            {% else %}
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                class="" alt="avatar" width="100" />
+                            {% endif %}
+                            {% if user.first_name %}
+                            <h5 class="my-3">{{user.first_name}} {{user.last_name}}</h5>
+                            <p class="text-muted">{{user.address}}</p>
+                            {% else %}
+                            <p class="my-3 lead">Please Complete Profile</p>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="card-body text-center">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                                alt="avatar" />
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a type="button" href="{% url 'index' %}"
+                        class="list-group-item list-group-item-action rounded fs-5 border-0 px-4 {% if request.url == '/youtube/' %} active {% endif %}"
+                        aria-current="true">
+                        <i class="fa fa-home me-2"></i>
+                        Home
+                    </a>
+                    <a type="button" href="{% url 'info' %}"
+                        class="list-group-item list-group-item-action rounded fs-5 border-0 px-4 {% if 'info' in request.url %} active {% endif %}">
+                        <i class="fa fa-compass me-2"></i>
+                        Explore
+                    </a>
+                    <hr>
+                    <a href="javascript::void(0)"
+                        class="list-group-item rounded fs-4 border-0 px-3 fw-bold">Category</a>
+                    {% for category in categories %}
+                    {% if not category.id == 0 %}
+                    <a type="button" href="javascript:void(0)"
+                        class="list-group-item list-group-item-action rounded fs-5 border-0 px-4 {% if '{{category}}' in request.url %} active {% endif %}">
+                        <i class="fas fa-angle-right me-2"></i>
+                        {{category}}
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

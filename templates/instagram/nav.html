@@ -1,0 +1,66 @@
+{% load static %}
+
+{% load static %}
+
+<!--Main Navigation-->
+<nav class="navbar d-flex justify-content-between align-items-center px-3 border-bottom">
+    <a class="navbar-brand ml-lg-5 mt-1 mr-5" href="{% url 'instagram-home' %}"><img
+            src="{% static 'img/instagram.png' %}" class="object-fit-cover" height="64" width="148" /></a>
+    <button class="border-0 btn rounded d-lg-none d-md-none d-sm-block">
+        <i class="fas fa-sliders"></i>
+    </button>
+    <div class="d-none d-lg-block">
+        <ul class="list-group list-group-horizontal align-items-center">
+            <li class="list-group-item border-0">
+                <a href="{% url 'instagram-home' %}" role="button" class="btn">
+                    <i class="fas fa-home"></i>
+                </a>
+                <a href="{% url 'index' %}" role="button" class="btn">
+                    <i class="fas fa-house-chimney-window"></i>
+                </a>
+                <a href="#postCreate" data-bs-toggle="modal" role="button" class="btn">
+                    <i class="fas fa-plus-circle"></i>
+                </a>
+                <a href="{% url 'index' %}" role="button" class="btn">
+                    <i class="fas fa-bell"></i>
+                </a>
+            </li>
+            <li class="list-group-item border-0 px-3">
+                <!-- Theme Toggle Start -->
+                <div class="theme-toggle">
+                    <label class="switch">
+                        <input type="checkbox" name="theme" id="theme" checked />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <!-- Theme Toggle End -->
+            </li>
+            <li class="list-group-item border-0 px-3">
+                <!-- User -->
+                <div class="dropdown">
+                    <a class="" role="button dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if user.profile %}
+                        <img src="{{user.profile.url}}" class="rounded-circle object-fit-cover" height="48" width="48"
+                            alt="" loading="lazy" />
+                        {% else %}
+                        <img src="{% static 'img/logo-user.png' %}" class="rounded-circle object-fit-cover" height="48"
+                            width="48" alt="" loading="lazy" />
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'instagram-profile' user.id %}">
+                                My profile
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'logout' %}">
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

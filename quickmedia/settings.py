@@ -49,8 +49,7 @@ AUTH_USER_MODEL = AUTH_USER_MODEL
 INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "youtube.apps.YoutubeConfig",
-    "facebook.apps.FacebookConfig",
-    "instagram.apps.InstagramConfig",
+    "meta.apps.MetaConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -61,8 +60,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "schema_graph",
     "debug_toolbar",
+    "login_required",
 ]
-
 
 # Debug Toolbar Configurations
 INTERNAL_IPS = INTERNAL_IPS
@@ -75,6 +74,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "login_required.middleware.LoginRequiredMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -91,6 +91,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "youtube.utils.category_context_processor.get_category",
             ],
         },
     },
@@ -160,3 +161,5 @@ CACHES = {
         "LOCATION": CACHE_TABLE,
     }
 }
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None

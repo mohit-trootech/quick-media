@@ -1,0 +1,10 @@
+{% extends 'youtube/index.html' %}
+{% block content %}
+
+<div class="container">
+    <div id="ytplayer"></div>
+    <div class="row">
+        {% include 'youtube/videos.html' with videos=videos %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends 'quickmedia/index.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<section class="mt-3">
+    <div class="container">
+        <div class=" row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a class="text-decoration-none" href="{% url 'index' %}">
+                                Home
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            User Profile
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center text-capitalize">
+                        {% if request.user.profile %}
+                        <img src="{{request.user.profile.url}}" alt="avatar" class="rounded-circle img-thumbnail"
+                            width="150">
+                        {% else %}
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                            alt="avatar" class="rounded-circle img-thumbnail" width="150">
+                        {% endif %}
+                        {% if request.user.first_name %}
+                        <h5 class="my-3">{{request.user.first_name}} {{request.user.last_name}}</h5>
+                        {% else %}
+                        <h5 class="my-3">{{request.user}}</h5>
+                        {% endif %}
+                        {% if request.user.address %}
+                        <p class="text-muted mb-4">{{request.user.address}}</p>
+                        {% else %}
+                        <p class="mb-4 text-warning opacity-75">Update Address</p>
+                        {% endif %}
+                        <div class="d-flex justify-content-center mb-2">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#profileUpdateModal">Update</button>
+                            <a role="button" href="{% url 'logout' %}" type="button"
+                                class="btn btn-outline-primary ms-1">Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush rounded-3">
+                            <li
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                                <i class="fab fa-github fa-lg text-body"></i>
+                                <p class="mb-0">mdbootstrap</p>
+                            </li>
+                            <li
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                                <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
+                                <p class="mb-0">@mdbootstrap</p>
+                            </li>
+                            <li
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                                <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
+                                <p class="mb-0">mdbootstrap</p>
+                            </li>
+                            <li
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+                                <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
+                                <p class="mb-0">mdbootstrap</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="mb-0">
+                                    {% if request.user.first_name %}
+                                <p class=" mb-0">{{request.user.get_full_name}}</p>
+                                {% else %}
+                                <p class="text-muted mb-0">Update Email</p>
+                                {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                {% if request.user.email %}
+                                <p class=" mb-0">{{request.user.email}}</p>
+                                {% else %}
+                                <p class="text-muted mb-0">Update Email</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Phone</p>
+                            </div>
+                            <div class="col-sm-9">
+                                {% if request.user.phone %}
+                                <p class=" mb-0">{{request.user.phone}}</p>
+                                {% else %}
+                                <p class="text-muted mb-0">Update Phone Number</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Age</p>
+                            </div>
+                            <div class="col-sm-9">
+                                {% if request.user.age %}
+                                <p class=" mb-0">{{request.user.age}}</p>
+                                {% else %}
+                                <p class="text-muted mb-0">Update Age</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Address</p>
+                            </div>
+                            <div class="col-sm-9">
+                                {% if request.user.address %}
+                                <p class=" mb-0">{{request.user.address}}</p>
+                                {% else %}
+                                <p class="text-muted mb-0">Update Address</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Gender</p>
+                            </div>
+                            <div class="col-sm-9">
+                                {% if request.user.gender %}
+                                {% if request.user.gender == "M" %}
+                                <p class=" mb-0">Male</p>
+                                {% else %}
+                                <p class=" mb-0">Female</p>
+                                {% endif %}
+                                {% else %}
+                                <p class="text-muted mb-0">Update Gender</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'accounts/profile-update.html' %}
+{% endblock %}

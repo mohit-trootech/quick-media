@@ -1,0 +1,81 @@
+{% extends 'youtube/index.html' %}
+{% load format_number %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div id="iframeVideoMain">
+                <iframe id="player" type="text/html" class="w-100" height="540"
+                    src="http://www.youtube.com/embed/{{current_video.video_id}}" frameborder="0"></iframe>
+            </div>
+            <div id="videoDetailsMain">
+                <div class="card">
+                    <div class="card-header">
+                        <p class="h3 fw-bold">{{current_video.title}}</p>
+                        <p class="h5 fw-lighter">
+                            <i class="me-2 fa fa-thumbs-up"></i>{{current_video.like|format_number}} | <i
+                                class="fa fa-eye me-2"></i>{{current_video.views|format_number}}
+                        </p>
+                        <div class="d-flex mb-3 align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="mx-2">
+                                    <img src="{{current_video.channel.thumbnail}}"
+                                        class="rounded-circle object-fit-contain" alt="feed-channel-thumbnail"
+                                        width="48">
+                                </div>
+                                <div class="mx-2">
+                                    <p class="text-secondary my-0 fs-3">{{current_video.channel}}</p>
+                                </div>
+                            </div>
+                            <a class="btn btn-primary" data-bs-toggle="collapse" id="videoDetailBtn"
+                                href="#videoDetails" role="button" aria-expanded="false" aria-controls="videoDetails">
+                                Show More
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="collapse" id="videoDetails">
+                        <div class="card-body">
+                            <p class="fw-light lh-lg">
+                                {{current_video.description}}
+                            </p>
+                            <table class="table table-hover">
+                                <hr>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Tag</th>
+                                        <td>
+                                            {% for tag in current_video.tags.all %}
+                                            <span class="badge rounded text-bg-primary">{{tag}}</span>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Category</th>
+                                        <td>
+                                            <span
+                                                class="badge rounded text-bg-primary">{{current_video.category}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Country</th>
+                                        <td>
+                                            <span
+                                                class="badge rounded text-bg-primary">{{current_video.channel.region}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            {% for video in videos %}
+            {% include 'youtube/video-card.html' with video=video %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

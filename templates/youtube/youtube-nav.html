@@ -1,0 +1,78 @@
+{% load static %}
+<header>
+    <div class="p-3 text-center border-bottom mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="">
+                <button type="button" data-bs-toggle="offcanvas" data-bs-target="#youtubeSideCanvas"
+                    aria-controls="youtubeSideCanvas" class="navbar-toggler mx-2" aria-label="Close">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a href="{% url 'youtube-home' %}" class="">
+                    <img src="{% static 'img/logo-youtube-dark.webp' %}" height="35" />
+                </a>
+            </div>
+            <div class="d-none d-lg-block">
+                <form class="" method="get" id="youtubeSearch">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control rounded" id="searchOnYoutube" placeholder="Search">
+                        <span class="input-group-text border-0 bg-transparent" id="basic-addon1">
+                            <button type="submit" class="btn">
+                                <i class="fa fa-magnifying-glass"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="d-none d-lg-block">
+                <ul class="list-group list-group-horizontal align-items-center">
+                    <li class="list-group-item border-0 px-3">
+                        <a href="{% url 'index' %}" role="button" class="btn">
+                            <i class="fas fa-home"></i>
+                        </a>
+                        <a href="{% url 'index' %}" role="button" class="btn">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>
+                    <li class="list-group-item border-0 px-3">
+                        <!-- Theme Toggle Start -->
+                        <div class="theme-toggle">
+                            <label class="switch">
+                                <input type="checkbox" name="theme" id="theme" checked />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <!-- Theme Toggle End -->
+                    </li>
+                    <li class="list-group-item border-0 px-3">
+                        <!-- User -->
+                        <div class="dropdown">
+                            <a class="" role="button dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                {% if user.profile %}
+                                <img src="{{user.profile.url}}" class="rounded-circle" height="35" alt=""
+                                    loading="lazy" />
+                                {% else %}
+                                <img src="{% static 'img/logo-user.png' %}" class="rounded-circle object-fit-scale"
+                                    height="35" alt="" loading="lazy" />
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'profile' user.id %}">
+                                        My profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'logout' %}">
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Jumbotron -->
+</header>
+<!--Main Navigation-->

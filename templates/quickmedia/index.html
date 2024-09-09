@@ -2,5 +2,9 @@
 
 {% block title %}QuickMedia{% endblock %}
 {% block main-content %}
-<h1>Hello World</h1>
+{% include "required/navbar.html" %}
+{% block navbar %}{% endblock %}
+{% block content %}
+{% include 'quickmedia/social-media-cards.html' %}
+{% endblock %}
 {% endblock %}

@@ -29,7 +29,9 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 # Template Names
 INDEX_TEMPLATE = "quickmedia/index.html"
+INFO_TEMPLATE = "quickmedia/info.html"
 
 # Url Reverse Names
 INDEX_REVERSE = "index"
+INFO_REVERSE = "info"
 SCHEMA_REVERSE = "schema"

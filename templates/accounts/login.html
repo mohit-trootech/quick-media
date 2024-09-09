@@ -1,0 +1,50 @@
+{% extends 'quickmedia/index.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="card justify-content-center mx-5 mt-3">
+    <div class="card-header fs-4">
+        Login
+    </div>
+    <div class="card-body">
+        <form method="post" class=" needs-validation" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="row mb-3 mx-2">
+                <label for="{{field.id_for_label}}" class="form-label">{{field.label}}</label>
+                {{field}}
+                {% if field.help_text %}
+                <div class="invalid-feedback">
+                    {{field.help_text}}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                class="btn btn-primary btn-block col-12 mb-4">Sign
+                in</button>
+
+            <div class="text-center">
+                <p>Not a member? <a href="{% url 'register' %}">Register</a></p>
+                <p>or sign up with:</p>
+                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+
+                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                    <i class="fab fa-google"></i>
+                </button>
+
+                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                    <i class="fab fa-twitter"></i>
+                </button>
+
+                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                    <i class="fab fa-github"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

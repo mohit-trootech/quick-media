@@ -1,0 +1,11 @@
+<style>
+    .collapse:not(.show) {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+    }
+</style>
+<div class="collapse" id="postText_{{post.id}}">
+    <strong class="me-2">{{post.user.username}}</strong>{{post.title}}
+</div>

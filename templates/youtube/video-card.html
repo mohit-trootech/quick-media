@@ -1,0 +1,23 @@
+{% load format_number %}
+<a href="/youtube/{{video.video_id}}/" onclick="playVideo('{{video.video_id}}')"
+    class="text-decoration-none cursor-pointer">
+    <div class="card card-youtube mb-3">
+        <img src="{{video.thumbnail}}" class="card-img-top" alt="feed-video-thumbnail" class="img-fluid">
+        <div class="card-body m-0 p-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="{{video.channel.thumbnail}}" class="rounded-circle object-fit-contain"
+                        alt="feed-channel-thumbnail" width="48">
+                </div>
+                <div class="col-md-9">
+                    <p class="text-title my-0">{{video.title}}</p>
+                    <p class="text-secondary my-0">{{video.channel}}</p>
+                    {% if video.views %}
+                    <small class="text-secondary my-0">{{video.views|format_number}} |
+                        {{video.published|date:"SHORT_DATE_FORMAT"}}</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</a>
