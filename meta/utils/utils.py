@@ -43,8 +43,10 @@ def create_post_images_object(post, images):
     """
     create post images
     """
+    posts = []
     for image in images:
-        PostImage.objects.create(post=post, image=image)
+        posts.append(PostImage(post=post, image=image))
+    PostImage.objects.bulk_create(posts)
 
 
 def file_type_check_for_image(images):
@@ -133,4 +135,3 @@ def update_following_list(request, id):
         request.user.followers.remove(user)
     except User.DoesNotExist:
         request.user.followers.add(user)
-

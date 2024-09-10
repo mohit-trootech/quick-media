@@ -55,7 +55,7 @@ $(document).ready(() => {
     getRequest({ searchValue: searchValue });
   });
   $("#videoDetailBtn").click((elem) => {
-    elem.currentTarget.innerText == "Show Less"
+    elem.currentTarget.innerText == "Show More"
       ? (elem.currentTarget.innerText = "Show More")
       : (elem.currentTarget.innerText = "Show Less");
   });

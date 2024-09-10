@@ -1,0 +1,12 @@
+<div class="card rounded my-3">
+    <div class="card-body text-capitalize">
+        <p class="card-title text-center h4">suggestions for you</p>
+        <hr>
+        {% for user in users %}
+        {% if forloop.counter < 6 %} {% include "facebook/user-suggestion-card.html" %} {% endif %} {% endfor %} <button
+            data-bs-toggle="offcanvas" data-bs-target="#userSuggestion" class="btn btn-primary btn-block col-12">Show
+            More
+            Users</button>
+    </div>
+    {% include "facebook/user-suggestion.html" %}
+</div>

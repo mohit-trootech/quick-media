@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Facebook{% endblock %}
+{% block favicon %}
+<link rel="shortcut icon" href="{% static 'img/facebook.png' %}" type="image/x-icon">
+{% endblock %}
+
+{% block main-content %}
+{% include 'facebook/nav.html' %}
+<div class="row m-0 p-0">
+    <div class="col-md-4 d-none d-md-block">
+        {% include 'facebook/sidebar.html' %}
+    </div>
+    <div class="col-md-8 col-sm-12">
+
+        {% block content %}
+        <div id="facebookMain">
+            <div id="newPost"></div>
+            {% for post in posts %}
+            {% include "facebook/feeds-card.html" %}
+            <div id="newPagePosts"></div>
+            <a href="?page={{ posts.next_page_number }}" hidden class="hidden" id="infiniteScollingTrigger">next</a>
+            {% endfor %}
+        </div>
+        {% endblock %}
+    </div>
+</div>
+{% include 'facebook/notifications.html' %}
+{% include 'facebook/create.html' %}
+<script src="{% static 'js/fb.js' %}"></script>
+{% endblock %}

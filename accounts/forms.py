@@ -1,4 +1,3 @@
-from ast import For
 from django.forms import (
     ModelForm,
     ClearableFileInput,

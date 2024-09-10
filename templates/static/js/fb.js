@@ -3,6 +3,7 @@ $(document).ready(() => {
   const newPost = document.getElementById("newPost");
   const ajaxUrl = "/meta/ajax_update/";
   const postModalBody = document.getElementById("postModalBody");
+  const newPagePosts = document.getElementById("newPagePosts");
 
   /* Toast Element */
   const createModalDiv = document.getElementById("postCreate");
@@ -54,7 +55,11 @@ $(document).ready(() => {
       success: function (content, status, xhr) {
         if (type != "PUT") {
           if (xhr.status == 200) {
-            newPost.innerHTML = content + newPost.innerHTML;
+            if (data.includes("page")) {
+              newPagePosts.innerHTML = content;
+            } else {
+              newPost.innerHTML = content + newPost.innerHTML;
+            }
           } else {
             let newComment = $("#newComment-" + data.get("id"))[0];
             let newCommentOffcanvas = $(
@@ -109,9 +114,7 @@ $(document).ready(() => {
   });
 
   /* Post Like */
-  $(".fa-heart.like-btn").click((event) => {
-    alert(event);
-    console.log(event);
+  $(".fa-heart").click((event) => {
     event.preventDefault();
     const elem_id = event.target.id;
     btnDisableToggle(elem_id);
@@ -120,7 +123,7 @@ $(document).ready(() => {
   });
 
   /* Post Saved */
-  $(".fa-bookmark.save-btn").click((event) => {
+  $(".fa-bookmark").click((event) => {
     event.preventDefault();
     const elem_id = event.target.id;
     btnDisableToggle(elem_id);
@@ -183,5 +186,17 @@ $(document).ready(() => {
     elem.target.innerText == "Show Less"
       ? (elem.currentTarget.innerText = "Show More")
       : (elem.currentTarget.innerText = "Show Less");
+  });
+
+  /* Infinite Scrolling */
+
+  $(document).scroll(function () {
+    if (
+      $(window).scrollTop() + $(window).height() >=
+      $(document).height() - $(window).height()
+    ) {
+      let search = $("#infiniteScollingTrigger")[0].search.slice(1);
+      ajaxCall("GET", search, ajaxUrl, getCsrf());
+    }
   });
 });

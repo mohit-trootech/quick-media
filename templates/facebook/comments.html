@@ -1,0 +1,18 @@
+<div class="shadow">
+    <form method="post" class="createPostComment mb-3">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+            <input type="hidden" value="{{post.id}}" name="id">
+            <input type="text" class="form-control" id="commentInput" name="comment" placeholder="Add Comment">
+            <label for="floatingInput"><i class="fa fa-plus-circle me-2"></i>Comment</label>
+        </div>
+    </form>
+    <div id="newComment-{{post.id}}"></div>
+    {% if post.comments.all %}
+    {% for comment in post.comments.all %}
+    {%if forloop.counter < 3%} {%include 'facebook/comment-card.html' %} {% else %} {% endif %} {% endfor %}
+        {%include "facebook/comments-offcanvas.html" %} <a data-bs-toggle="offcanvas"
+        href="#commentsOffcanvas{{post.id}}" class="text-decoration-none">Load More
+        Comments</a>
+        {% endif %}
+</div>

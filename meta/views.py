@@ -1,4 +1,5 @@
 from django.http import (
+    HttpRequest,
     HttpResponse,
     HttpResponseForbidden,
     JsonResponse,
@@ -44,6 +45,8 @@ from meta.utils.utils import (
     get_post_with_id,
 )
 from typing import Any
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 class Instagram(TemplateView):
@@ -60,7 +63,26 @@ class Instagram(TemplateView):
         return context
 
 
-class AjaxUpdateInstagram(View):
+class AjaxUpdate(View):
+
+    def get(self, request):
+        context = {}
+        context["users"] = User.objects.all()
+        posts = (
+            Post.objects.select_related(USER)
+            .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
+            .all()
+            .distinct()
+        )
+        paginator = Paginator(
+            posts,
+            5,
+        )
+        page_number = self.request.GET.get("page") or 1
+        page_obj = paginator.get_page(page_number)
+        context[POSTS] = page_obj
+        page = render(request, "facebook/home.html", context)
+        return HttpResponse(page.content, status=200)
 
     def post(self, request):
         post_type = request.POST.get(TYPE)
@@ -138,5 +160,59 @@ class InstagramProfileView(TemplateView):
         context = super().get_context_data(**kwargs)
         context[USER] = User.objects.prefetch_related(FOLLOWERS, FOLLOWING).get(
             username=kwargs.get(USER)
+        )
+        return context
+
+
+def is_ajax(request):
+    """
+    This utility function is used, as `request.is_ajax()` is deprecated.
+
+    This implements the previous functionality. Note that you need to
+    attach this header manually if using fetch.
+    """
+    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+
+
+class Facebook(TemplateView):
+    template_name = TemplateNames.FACEBOOK_HOME.value
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["users"] = User.objects.all()
+        posts = (
+            Post.objects.select_related(USER)
+            .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
+            .all()
+            .distinct()
+        )
+        paginator = Paginator(
+            posts,
+            5,
+        )
+        page_number = self.request.GET.get("page") or 1
+        page_obj = paginator.get_page(page_number)
+        context[POSTS] = page_obj
+        return context
+
+
+class FacebookProfileView(TemplateView):
+    template_name = TemplateNames.FACEBOOK_PROFILE_TEMPLATE.value
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context[USER] = User.objects.prefetch_related(FOLLOWERS, FOLLOWING).get(
+            username=kwargs.get(USER)
+        )
+        context[POSTS] = (
+            Post.objects.select_related(USER)
+            .prefetch_related(IMAGES)
+            .filter(user=context[USER])
+        )
+        context["saved_posts"] = (
+            Post.objects.select_related(USER)
+            .prefetch_related(IMAGES)
+            .filter(Q(user=context[USER]) & Q(saved__in=[context[USER].id]))
+            .distinct()
         )
         return context

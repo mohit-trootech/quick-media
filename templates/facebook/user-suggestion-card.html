@@ -1,0 +1,23 @@
+<a href="{% url 'facebook-username-profile' user %}"
+    class="d-flex justify-content-between mb-2 pb-2 border-bottom align-items-center text-decoration-none"
+    type="button">
+    <div class="d-flex align-items-center hover-pointer">
+        {% if user.profile %}
+        <img class="rounded-circle object-fit-cover w-25 me-2" src="{{user.profile.url}}" alt="">
+        {% else %}
+        <img class="rounded-circle object-fit-cover w-25 me-2" src="https://picsum.photos/500/500" alt="">
+        {% endif %}
+        <div class="me-2">
+            {% if user.first_name %}
+            <p>{{user.first_name}} {{user.last_name}}</p>
+            {% else %}
+            <p>{{user}}</p>
+            {% endif %}
+            <p class="tx-11 text-muted">12 Mutual Friends</p>
+        </div>
+    </div>
+    <button class="btn btn-icon">
+        <i class="fa fa-user-plus"></i>
+        <!-- <i class="fa fa-user-check"></i> -->
+    </button>
+</a>

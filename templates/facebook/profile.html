@@ -1,0 +1,92 @@
+{% extends 'facebook/index.html' %}
+
+{% block content %}
+<div class="card my-3">
+    <img src="https://picsum.photos/2048/2048" class="w-100 object-fit-cover opacity-25" height="320">
+    <div class="card-img-overlay w-100 m-0 p-0">
+        <div class="position-absolute bottom-0 mb-3 w-100">
+            <div id="facebookProfile">
+                <div class="row g-0 mx-3">
+                    <div class="col-md-2">
+                        {% if user.profile %}
+                        <img src="{{user.profile.url}}" alt="avatar"
+                            class="rounded-circle img-thumbnail object-fit-cover" width="192" height="192">
+                        {% else %}
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                            alt="avatar" class="rounded-circle img-thumbnail object-fit-cover" width="192" height="192">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <div class="d-flex mb-2 justify-content-between align-items-center">
+                                <h5 class="card-title text-capitalize">{{user.username}}</h5>
+                                <div>
+                                    <button class="btn btn-primary followBtn" id="{{user.id}}">Follow</button>
+                                    <button class="btn btn-secondary" data-bs-target="#followList"
+                                        data-bs-toggle="modal">Follow
+                                        List</button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around align-items-center">
+                                <div class="col-md-4">
+                                    {% if user.first_name %}
+                                    <p class="card-text m-0">{{user.get_full_name}}</p>
+                                    <p class="card-text text-muted m-0 p-0">Last updated 3 mins ago</p>
+                                    {% else %}
+                                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins
+                                            ago</small>
+                                    </p>
+                                    {% endif %}
+                                    <a href="javascript:void(0)" class="text-decoration-none m-0 p-0">Sample User Bio
+                                        Link</a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="d-flex text-center justify-content-between py-3 px-1">
+                                        <div>
+                                            <p class="fs-5 mb-1">Followers</p>
+                                            <p class="mb-0">{{user.get_followers.count}}</p>
+                                        </div>
+                                        <div>|</div>
+                                        <div class="px-3">
+                                            <p class="fs-5 mb-1">Following</p>
+                                            <p class="mb-0">{{user.get_following.count}}</p>
+                                        </div>
+                                        <div>|</div>
+                                        <div>
+                                            <p class="fs-5 mb-1">Posts</p>
+                                            <p class="mb-0">{{user.get_total_posts.count}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="profile-posts">
+    <div class="nav nav-tabs d-flex justify-content-around" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
+            role="tab" aria-controls="nav-home" aria-selected="true">
+            <i class="fa fa-grip me-2"></i>Posts
+        </button>
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-saved" type="button"
+            role="tab" aria-controls="nav-profile" aria-selected="true">
+            <i class="fa fa-bookmark me-2"></i>Saved
+        </button>
+    </div>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+            tabindex="0">
+            {% include 'facebook/posts.html' %}
+        </div>
+        <div class="tab-pane fade" id="nav-saved" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+            {% include 'facebook/saved-post.html' %}
+        </div>
+    </div>
+</div>
+{% include "instagram/follow-modal.html" %}
+{% include "instagram/post-modal.html" %}
+{% endblock %}

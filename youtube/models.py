@@ -12,12 +12,14 @@ from youtube.utils.constants import Constants
 
 
 class Region(TitleDescriptionModel):
+    pass
 
     def __str__(self):
         return self.title
 
 
 class Tag(TitleDescriptionModel):
+    pass
 
     def __str__(self):
         return self.title
@@ -39,6 +41,7 @@ class Channel(TitleDescriptionModel, TimeStampedModel):
 
 
 class Category(TitleDescriptionModel):
+    pass
 
     def __str__(self):
         return self.title

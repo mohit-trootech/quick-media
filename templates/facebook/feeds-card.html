@@ -2,7 +2,7 @@
 <div class="card my-3" id="post_{{post.id}}">
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{% url 'instagram-username-profile' post.user %}" class="text-decoration-none">
+            <a href="{% url 'facebook-username-profile' post.user %}" class="text-decoration-none">
                 {% if post.user.profile %}
                 <img src="{{post.user.profile.url}}" class="rounded-circle me-2 object-fit-cover" height="35"
                     width="35" />
@@ -21,26 +21,33 @@
             {% include "instagram/image-carousel.html" %}
             {% else %}
             {% for image in post.images.all %}
-            <img src="{{image.image.url}}" class="w-100" />
+            <img src="{{image.image.url}}" class="object-fit-cover w-100" height="480" />
             {% endfor %}
             {% endif %}
             <div class="d-flex justify-content-between align-items-center my-3">
-                <a type="button" id="like-{{post.id}}" href="like/{{post.id}}"
-                    class="far btn btn-outline-primary {% post_liked_by_user request.user.id post %} text-decoration-none fa-heart like-btn me-3"></a>
+                <div>
+                    <a type="button" id="like-{{post.id}}" href="like/{{post.id}}"
+                        class="far btn btn-outline-primary {% post_liked_by_user request.user.id post %} text-decoration-none fa-heart me-3"></a>
+                    <a type="button" href="#collapseComments_{{post.id}}" data-bs-toggle="collapse"
+                        class="far btn btn-outline-primary active text-decoration-none fa-comment me-3"></a>
+                </div>
                 <a type="button" id="saved-{{post.id}}" href="bookmark/{{post.id}}"
-                    class="far btn btn-outline-primary save-btn {% post_saved_by_user request.user.id post %} text-decoration-none fa-bookmark"></a>
+                    class="far btn btn-outline-primary {% post_saved_by_user request.user.id post %} text-decoration-none fa-bookmark"></a>
             </div>
-            <div class="description">
+            <div class="description mb-3">
                 {% include "instagram/post-text-trunacate.html" with post=post %}
                 <a data-bs-toggle="collapse" href="#postText_{{post.id}}"
                     class="text-decoration-none feed-title-toggle">Show More</a>
             </div>
         </div>
-        <div class="comments">
-            {% include 'instagram/comments.html' %}
+        <div class="collapse p-0" id="collapseComments_{{post.id}}">
+            <div class="comments">
+                {% include 'facebook/comments.html' %}
+            </div>
         </div>
+
     </div>
     <div class="card-footer">
-        Recently
+        {{post.created}}
     </div>
 </div>

@@ -19,13 +19,17 @@ class TemplateNames(Enum):
     POST_CARD_TEMPLATE = "instagram/feeds-card.html"
     HOME_PAGE_TEMPLATE = "instagram/home-page.html"
     COMMENT_CARD_TEMPLATE = "instagram/comment-card.html"
+    FACEBOOK_HOME = "facebook/index.html"
+    FACEBOOK_PROFILE_TEMPLATE = "facebook/profile.html"
 
 
 class MetaUrls(Enum):
     INSTAGRAM_REVERSE = "instagram-home"
     INSTAGRAM_USERNAME_PROFILE = "instagram-username-profile"
     INSTAGRAM_PROFILE_REVERSE = "instagram-profile"
-    AJAX_UPDATE_INSTAGRAM = "ajax-update-instagram"
+    AJAX_UPDATE = "ajax-update"
+    FACEBOOK_REVERSE = "facebook-home"
+    FACEBOOK_USERNAME_PROFILE = "facebook-username-profile"
 
 
 class Messages(Enum):
