@@ -18,7 +18,7 @@ def get_complete_post_dataset_and_exclude_liked_saved_posts(self):
     return (Post.objects.select_related("user").prefetch_related("images", "comments", "like", "saved").all().exclude(like=self.request.user).exclude(saved=self.request.user).distinct())
 
 def get_users_objects_with_all_related_fields():
-    return User.objects.prefetch_related("following", "followers", "likes", "saves", "comments").all()
+    return User.objects.prefetch_related("following", "followers", "likes", "saves", "comments").all().order_by("date_joined")[:20]
 
 def get_users_objects_with_all_related_fields_using_username(username):
     return User.objects.prefetch_related("following", "followers", "likes", "saves", "comments").get(username=username)

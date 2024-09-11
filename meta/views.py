@@ -1,15 +1,12 @@
 from django.http import (
-    HttpRequest,
     HttpResponse,
     HttpResponseForbidden,
     JsonResponse,
 )
 from django.views.generic import *
 from meta.utils.constants import (
-    IMAGES,
     TemplateNames,
     TemplateNames,
-    ContextNames,
     Messages,
     Urls,
     Errors,
@@ -23,12 +20,9 @@ from meta.utils.constants import (
     ID,
     FOLLOWING,
     USER,
-    POSTS,
-    COMMENTS,
-    FOLLOWERS,PAGE,
-    POST_MODAL,USERS, USERS_FOLLOW,SAVED_POSTS
+    POSTS,PAGE,
+    POST_MODAL,USERS, SAVED_POSTS
 )
-from meta.models import Post
 from accounts.models import User
 from django.contrib.messages import info
 from accounts.forms import ProfileUpdateForm
@@ -45,14 +39,19 @@ from meta.utils.utils import (
     get_post_with_id,get_complete_post_dataset_and_exclude_liked_saved_posts,get_users_objects_with_all_related_fields,users_posts,get_users_objects_with_all_related_fields_using_username,saved_posts
 )
 from typing import Any
-from django.db.models import Q
 from django.core.paginator import Paginator
 
 
 class Instagram(TemplateView):
+    """
+    instagram index page view
+    """
     template_name = TemplateNames.INSTAGRAM_HOME.value
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
+        """
+        instagram index page context includes posts with pagination objects
+        """
         context = super().get_context_data(**kwargs)
         page_number = self.request.GET.get("page") or 1
         posts = get_complete_post_dataset_and_exclude_liked_saved_posts(self)
@@ -167,7 +166,7 @@ class InstagramProfileView(TemplateView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context[USER] = get_users_objects_with_all_related_fields_using_username(kwargs.get("user"))
+        context[USER] = get_users_objects_with_all_related_fields_using_username(kwargs.get(USER))
         context[POSTS] = users_posts(context[USER])
         context[SAVED_POSTS] = saved_posts(context[USER])
         return context
@@ -194,7 +193,8 @@ class FacebookProfileView(TemplateView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context[USER] = get_users_objects_with_all_related_fields_using_username(kwargs.get("user"))
+        context[USERS] = get_users_objects_with_all_related_fields()
+        context[USER] = get_users_objects_with_all_related_fields_using_username(kwargs.get(USER))
         context[POSTS] = users_posts(context[USER])
         context[SAVED_POSTS] = saved_posts(context[USER])
         return context

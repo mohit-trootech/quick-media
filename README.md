@@ -55,11 +55,31 @@ pip install -r requirements.txt
 - Configure Settings:
 
 Update `settings.py` with API keys and database configuration.
+Generate a secret key:
+
+```bash
+python manage.py shell -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
 
 - Run Migrations:
 
 ```bash
+python manage.py makemigrations
 python manage.py migrate
+```
+
+- Create Admin User
+
+```bash
+python manage.py createsuperuser
+```
+
+- Create Fake Meta Posts & User Data
+
+```text
+step 1 - run shell_plus in bash/terminal.
+step 2 - open bulk_post.py and copy the code as it is.
+step 3 - paste the code in shell as wait to run.
 ```
 
 - Start Server:
@@ -75,6 +95,3 @@ Feel free to submit issues, propose changes, or contribute directly through pull
 ## License
 
 This project is licensed under the MIT License.
-
-Contact
-For further information, please contact

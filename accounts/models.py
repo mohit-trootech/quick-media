@@ -7,7 +7,7 @@ from django.db.models import (
     ManyToManyField,
     CASCADE,
 )
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from phonenumber_field.modelfields import PhoneNumberField
 from accounts.utils.constants import (
     ModelConstants,
@@ -18,8 +18,11 @@ from accounts.utils.constants import (
 from youtube.models import Tag, Category
 from django.utils.html import format_html
 
-
-# Create your models here.
+class CustomUserManager(UserManager):
+    def get(self, *args, **kwargs):
+        return super().prefetch_related("following", "followers", "likes", "saves", "comments").get(*args, **kwargs)
+    
+    
 class User(AbstractUser):
     age = IntegerField(null=True, blank=True)
     address = CharField(max_length=1024, null=True, blank=True)
@@ -31,6 +34,8 @@ class User(AbstractUser):
     following = ManyToManyField(
         "self", blank=True, related_name="followers", symmetrical=False
     )
+
+    objects = CustomUserManager()
 
     def get_interests(self):
         return self.interests

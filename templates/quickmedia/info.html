@@ -1,7 +1,101 @@
-{% extends 'base.html' %}
+{% extends 'quickmedia/index.html' %}
 
 {% block title %}Info{% endblock %}
-{% block main-content %}
-{% include "required/navbar.html" %}
-{% block navbar %}{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center">Quick Media Application</h1>
+    <p class="text-center">A Django-based social media aggregator integrating YouTube, Instagram, and Facebook.</p>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4>Key Features</h4>
+                </div>
+                <div class="card-body m-0 p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-action"><span class="feature-icon">&#9733;</span> Unified Home Page for easy navigation.</li>
+                        <li class="list-group-item list-group-item-action"><span class="feature-icon">&#9733;</span> YouTube Integration with API-based video fetching and storage.</li>
+                        <li class="list-group-item list-group-item-action"><span class="feature-icon">&#9733;</span> Custom models for Instagram and Facebook posts management.</li>
+                        <li class="list-group-item list-group-item-action"><span class="feature-icon">&#9733;</span> Infinite Scrolling for a seamless user experience.</li>
+                        <li class="list-group-item list-group-item-action"><span class="feature-icon">&#9733;</span> SQL Optimization for efficient data handling.</li>
+                        <li class="list-group-item list-group-item-action"><span class="feature-icon">&#9733;</span> YouTube Recommendation Algorithms for personalized content.</li>
+                        <li class="list-group-item list-group-item-action"><span class="feature-icon">&#9733;</span> AJAX Calls for dynamic content updates and interactions.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Installation and Setup</h4>
+                </div>
+                <div class="card-body">
+                    <p>Follow these steps to get the project up and running:</p>
+                    <ol>
+                        <li>Clone Repository:
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>git clone [repository-url]</code></pre>
+                        </li>
+                        <li>Install Dependencies:
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>pip install -r requirements.txt</code></pre>
+                        </li>
+                        <li>Configure Settings:
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>Update <i>settings.py</i> with API keys and database configuration.</code></pre>
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>Generate a secret key:
+python manage.py shell -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"</code></pre>
+                        </li>
+                        <li>Run Migrations:
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>python manage.py makemigrations
+python manage.py migrate</code></pre>
+                        </li>
+                        <li>Create Admin User:
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>python manage.py createsuperuser</code></pre>
+                        </li>
+                        <li>Create Fake Meta Posts & User Data:
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>step 1 - run shell_plus in bash/terminal.
+step 2 - open bulk_post.py and copy the code as it is.
+step 3 - paste the code in shell as wait to run.</code></pre>
+                        </li>
+                        <li>Start Server:
+                            <pre class="p-2 bg-light rounded border" style="color: deeppink;"><code>python manage.py runserver</code></pre>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contributing -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <h3 class="fs-3">Contributing</h3>
+            <p>Contributions are welcome! Please fork the repository and submit a pull request with your changes.</p>
+        </div>
+    </div>
+    <hr class="container-fluid">
+
+    <!-- License -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <h3 class="fs-3">License</h3>
+            <p>This project is licensed under the MIT License - see the <code>LICENSE</code> file for details.</p>
+        </div>
+    </div>
+    <hr class="container-fluid">
+
+    <!-- Contact -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <h3 class="fs-3">Contact</h3>
+            <p>For any questions or issues, please contact:</p>
+            <ul class="list-unstyled">
+                <li><strong>GitHub:</strong> <a href="https://github.com/mohit-trootech"
+                        class="btn badge text-bg-secondary" target="_blank">GitHub Repository</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -15,7 +15,11 @@
             <p>{{user}}</p>
             {% endif %}
             <p class="tx-11 text-muted text-capitalize">
+                {%if user.following.all%}
                 {% call_method request.user "get_mutual_friends" user %} mutual friends
+                {%else%}
+                no mutual friends
+                {% endif %}
             </p>
         </div>
     </div>

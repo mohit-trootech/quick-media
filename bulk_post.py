@@ -6,12 +6,28 @@ from accounts.models import User
 from random import choice
 
 fake = Faker()
-users = User.objects.all()
-data = []
-data_img = []
+
+
+
+def fake_user(count):
+    data = {'username':[], 'objects':[]}
+    for _ in range(count):
+        first_name=fake.user_name()
+        last_name=fake.last_name()
+        username=first_name
+        password = fake.password()
+        email = fake.email()
+        if username not in data['username']:
+            data['username'].append(username)
+            data['objects'].append(User(first_name=first_name, last_name=last_name, username=username, password=password, email=email))
+    return data['objects']
+
 
 
 def create(count):
+    users = User.objects.all()
+    data = []
+    data_img = []
     for i in range(count):
 
         def create_bulk_posts(count):
@@ -33,11 +49,13 @@ def create(count):
                     data_img.append(post_img)
             return "Done"
 
-        create_bulk_posts(20)
+        create_bulk_posts(10)
         Post.objects.bulk_create(data)
         PostImage.objects.bulk_create(data_img)
         data.clear()
         data_img.clear()
 
-
+# Generate i User Objects
+User.objects.bulk_create(fake_user(100))
+# Generate Multiple of 10 Posts i*10 Examples 100*10=1000
 create(100)
