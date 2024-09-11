@@ -1,5 +1,5 @@
 {% extends 'instagram/index.html' %}
-
+{% load custom_tags %}
 {% block content %}
 <div id="profileDiv">
     <div class="profile-info-card m-3">
@@ -19,7 +19,9 @@
                         <div class="d-flex mb-2 justify-content-between align-items-center">
                             <h5 class="card-title text-capitalize">{{user.username}}</h5>
                             <div>
-                                <button class="btn btn-primary followBtn" id="{{user.id}}">Follow</button>
+                                <button class="btn btn-primary followBtn text-capitalize" id="{{user.id}}">
+                                    {% is_following request.user user %}
+                                </button>
                                 <button class="btn btn-secondary" data-bs-target="#followList"
                                     data-bs-toggle="modal">Follow
                                     List</button>

@@ -1,3 +1,4 @@
+{% load custom_tags %}
 <div class="modal fade" id="followList" tabindex="-1" aria-labelledby="followListLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -20,7 +21,7 @@
                     <div class="tab-pane fade show active" id="nav-following" role="tabpanel"
                         aria-labelledby="nav-following-tab" tabindex="0">
                         <div class="list-group list-group-flush">
-                            {% for user in user.get_following.all %}
+                            {% for user in user.get_followers.all %}
                             <div
                                 class="d-flex justify-content-between align-items-center list-group-item list-group-item-action rounded">
                                 <div class="d-flex align-items-center">
@@ -41,7 +42,9 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button class="btn btn-primary followBtn" id="{{user.id}}">Following</button>
+                                    <button class="btn btn-primary followBtn text-capitalize" id="{{user.id}}">
+                                        {% is_following request.user user %}
+                                    </button>
                                 </div>
                             </div>
                             {% endfor %}
@@ -50,7 +53,7 @@
                     <div class="tab-pane fade" id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab"
                         tabindex="0">
                         <div class="list-group list-group-flush">
-                            {% for user in user.get_followers.all %}
+                            {% for user in user.get_following.all %}
                             <div
                                 class="d-flex justify-content-between align-items-center list-group-item list-group-item-action rounded">
                                 <div class="d-flex align-items-center">

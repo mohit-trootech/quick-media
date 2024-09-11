@@ -58,11 +58,13 @@ class Instagram(TemplateView):
             Post.objects.select_related(USER)
             .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
             .all()
+            .exclude(like=self.request.user)
+            .exclude(saved=self.request.user)
             .distinct()
         )
         paginator = Paginator(
             posts,
-            5,
+            10,
         )
         page_number = self.request.GET.get("page") or 1
         page_obj = paginator.get_page(page_number)
@@ -79,11 +81,13 @@ class AjaxUpdate(View):
             Post.objects.select_related(USER)
             .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
             .all()
+            .exclude(like=self.request.user)
+            .exclude(saved=self.request.user)
             .distinct()
         )
         paginator = Paginator(
             posts,
-            5,
+            10,
         )
         page_number = self.request.GET.get("page") or 1
         page_obj = paginator.get_page(page_number)
@@ -203,11 +207,13 @@ class Facebook(TemplateView):
             Post.objects.select_related(USER)
             .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
             .all()
+            .exclude(like=self.request.user)
+            .exclude(saved=self.request.user)
             .distinct()
         )
         paginator = Paginator(
             posts,
-            5,
+            10,
         )
         page_number = self.request.GET.get("page") or 1
         page_obj = paginator.get_page(page_number)

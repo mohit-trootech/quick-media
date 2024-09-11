@@ -110,8 +110,6 @@ $(document).ready(() => {
 
   /* Post Like */
   $(".fa-heart.like-btn").click((event) => {
-    alert(event);
-    console.log(event);
     event.preventDefault();
     const elem_id = event.target.id;
     btnDisableToggle(elem_id);

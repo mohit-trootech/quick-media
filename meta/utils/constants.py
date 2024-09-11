@@ -71,7 +71,7 @@ ACTIVE = "active"
 EMPTY_STR = ""
 FOLLOWERS = "followers"
 POST_MODAL = "post_modal"
-
+FOLLOW = "follow"
 
 # Profile Thumbnail Preview
 THUMBNAIL_PREVIEW_TAG = '<img src="{img}" width="540"/>'

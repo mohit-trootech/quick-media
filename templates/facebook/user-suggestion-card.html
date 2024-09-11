@@ -1,3 +1,4 @@
+{% load custom_tags %}
 <a href="{% url 'facebook-username-profile' user %}"
     class="d-flex justify-content-between mb-2 pb-2 border-bottom align-items-center text-decoration-none"
     type="button">
@@ -13,11 +14,10 @@
             {% else %}
             <p>{{user}}</p>
             {% endif %}
-            <p class="tx-11 text-muted">12 Mutual Friends</p>
+            <p class="tx-11 text-muted text-capitalize">{% get_mutual_friends request.user user %} mutual friends</p>
         </div>
     </div>
-    <button class="btn btn-icon">
-        <i class="fa fa-user-plus"></i>
-        <!-- <i class="fa fa-user-check"></i> -->
+    <button class="btn btn-primary followBtn text-capitalize" id="{{user.id}}">
+        {% is_following request.user user %}
     </button>
 </a>
