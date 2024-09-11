@@ -21,8 +21,7 @@ class TemplateNames(Enum):
     COMMENT_CARD_TEMPLATE = "instagram/comment-card.html"
     FACEBOOK_HOME = "facebook/index.html"
     FACEBOOK_PROFILE_TEMPLATE = "facebook/profile.html"
-
-
+    HOME_FACEBOOK = "facebook/home.html"
 class MetaUrls(Enum):
     INSTAGRAM_REVERSE = "instagram-home"
     INSTAGRAM_USERNAME_PROFILE = "instagram-username-profile"
@@ -72,6 +71,10 @@ EMPTY_STR = ""
 FOLLOWERS = "followers"
 POST_MODAL = "post_modal"
 FOLLOW = "follow"
+PAGE = "page"
+USERS = "users"
+USERS_FOLLOW = "users_folow"
+SAVED_POSTS = "saved_posts"
 
 # Profile Thumbnail Preview
 THUMBNAIL_PREVIEW_TAG = '<img src="{img}" width="540"/>'

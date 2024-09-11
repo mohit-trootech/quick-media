@@ -14,10 +14,16 @@
             {% else %}
             <p>{{user}}</p>
             {% endif %}
-            <p class="tx-11 text-muted text-capitalize">{% get_mutual_friends request.user user %} mutual friends</p>
+            <p class="tx-11 text-muted text-capitalize">
+                {% call_method request.user "get_mutual_friends" user %} mutual friends
+            </p>
         </div>
     </div>
     <button class="btn btn-primary followBtn text-capitalize" id="{{user.id}}">
-        {% is_following request.user user %}
+        {% if request.user in user.following.all%}
+        Following
+        {% else %}
+        Follow
+        {% endif %}
     </button>
 </a>

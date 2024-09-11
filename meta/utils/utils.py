@@ -2,7 +2,26 @@ from meta.models import Comment, Post, PostImage
 from meta.utils.constants import COMMENT, FOLLOWING, Constants
 from accounts.models import User
 from meta.utils.constants import TITLE, IMAGES, LIKE, SAVED, USER, POST, ID, FOLLOWERS
+from django.db.models import Q
 
+def is_ajax(request):
+    """
+    This utility function is used,to check if the request is ajax request
+    """
+    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+
+
+def get_complete_post_dataset_and_exclude_liked_saved_posts(self):
+    """
+    get complete post dataset while excluding liked & saved posts
+    """
+    return (Post.objects.select_related("user").prefetch_related("images", "comments", "like", "saved").all().exclude(like=self.request.user).exclude(saved=self.request.user).distinct())
+
+def get_users_objects_with_all_related_fields():
+    return User.objects.prefetch_related("following", "followers", "likes", "saves", "comments").all()
+
+def get_users_objects_with_all_related_fields_using_username(username):
+    return User.objects.prefetch_related("following", "followers", "likes", "saves", "comments").get(username=username)
 
 def get_post_with_id(id: int):
     """
@@ -12,6 +31,27 @@ def get_post_with_id(id: int):
     """
     return Post.objects.prefetch_related(LIKE, SAVED).get(id=id)
 
+def users_posts(user):
+    """
+    returns all the users posts with related fields
+
+    :param user: 
+    """
+    return (Post.objects.select_related("user").prefetch_related("images", "comments", "like", "saved").filter(user=user).distinct())
+
+def saved_posts(user):
+    """
+    return saved posts for user with related fields
+
+
+    :param user: 
+    """
+    return (
+            Post.objects.select_related(USER)
+            .prefetch_related(IMAGES)
+            .filter(Q(saved__in=[user.id]))
+            .distinct()
+        )
 
 def get_user_object(id: int):
     """

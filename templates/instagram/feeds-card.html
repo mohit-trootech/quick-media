@@ -26,9 +26,10 @@
             {% endif %}
             <div class="d-flex justify-content-between align-items-center my-3">
                 <a type="button" id="like-{{post.id}}" href="like/{{post.id}}"
-                    class="far btn btn-outline-primary {% post_liked_by_user request.user.id post %} text-decoration-none fa-heart like-btn me-3"></a>
+                    class="far btn btn-outline-primary {%if post in request.user.likes.all%}active{%endif%} text-decoration-none fa-heart like-btn me-3"></a>
                 <a type="button" id="saved-{{post.id}}" href="bookmark/{{post.id}}"
-                    class="far btn btn-outline-primary save-btn {% post_saved_by_user request.user.id post %} text-decoration-none fa-bookmark"></a>
+                    class="far btn btn-outline-primary save-btn 
+                    {% if post in request.user.likes.all %}active{% endif %} text-decoration-none fa-bookmark"></a>
             </div>
             <div class="description">
                 {% include "instagram/post-text-trunacate.html" with post=post %}

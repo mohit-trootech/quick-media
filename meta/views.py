@@ -25,8 +25,8 @@ from meta.utils.constants import (
     USER,
     POSTS,
     COMMENTS,
-    FOLLOWERS,
-    POST_MODAL,
+    FOLLOWERS,PAGE,
+    POST_MODAL,USERS, USERS_FOLLOW,SAVED_POSTS
 )
 from meta.models import Post
 from accounts.models import User
@@ -42,7 +42,7 @@ from meta.utils.utils import (
     post_object_create,
     create_post_images_object,
     update_following_list,
-    get_post_with_id,
+    get_post_with_id,get_complete_post_dataset_and_exclude_liked_saved_posts,get_users_objects_with_all_related_fields,users_posts,get_users_objects_with_all_related_fields_using_username,saved_posts
 )
 from typing import Any
 from django.db.models import Q
@@ -54,19 +54,12 @@ class Instagram(TemplateView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        posts = (
-            Post.objects.select_related(USER)
-            .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
-            .all()
-            .exclude(like=self.request.user)
-            .exclude(saved=self.request.user)
-            .distinct()
-        )
+        page_number = self.request.GET.get("page") or 1
+        posts = get_complete_post_dataset_and_exclude_liked_saved_posts(self)
         paginator = Paginator(
             posts,
-            10,
+            5,
         )
-        page_number = self.request.GET.get("page") or 1
         page_obj = paginator.get_page(page_number)
         context[POSTS] = page_obj
         return context
@@ -76,23 +69,16 @@ class AjaxUpdate(View):
 
     def get(self, request):
         context = {}
-        context["users"] = User.objects.all()
-        posts = (
-            Post.objects.select_related(USER)
-            .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
-            .all()
-            .exclude(like=self.request.user)
-            .exclude(saved=self.request.user)
-            .distinct()
-        )
+        page_number = self.request.GET.get(PAGE) or 1
+        context["users"] = get_users_objects_with_all_related_fields()
+        posts = get_complete_post_dataset_and_exclude_liked_saved_posts(self)
         paginator = Paginator(
             posts,
-            10,
+            5,
         )
-        page_number = self.request.GET.get("page") or 1
         page_obj = paginator.get_page(page_number)
         context[POSTS] = page_obj
-        page = render(request, "facebook/home.html", context)
+        page = render(request, TemplateNames.HOME_FACEBOOK.value, context)
         return HttpResponse(page.content, status=200)
 
     def post(self, request):
@@ -181,41 +167,23 @@ class InstagramProfileView(TemplateView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context[USER] = User.objects.prefetch_related(FOLLOWERS, FOLLOWING).get(
-            username=kwargs.get(USER)
-        )
+        context[USER] = get_users_objects_with_all_related_fields_using_username(kwargs.get("user"))
+        context[POSTS] = users_posts(context[USER])
+        context[SAVED_POSTS] = saved_posts(context[USER])
         return context
-
-
-def is_ajax(request):
-    """
-    This utility function is used, as `request.is_ajax()` is deprecated.
-
-    This implements the previous functionality. Note that you need to
-    attach this header manually if using fetch.
-    """
-    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
-
 
 class Facebook(TemplateView):
     template_name = TemplateNames.FACEBOOK_HOME.value
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["users"] = User.objects.all()
-        posts = (
-            Post.objects.select_related(USER)
-            .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
-            .all()
-            .exclude(like=self.request.user)
-            .exclude(saved=self.request.user)
-            .distinct()
-        )
+        page_number = self.request.GET.get(PAGE) or 1
+        context[USERS] =get_users_objects_with_all_related_fields()
+        posts =get_complete_post_dataset_and_exclude_liked_saved_posts(self)
         paginator = Paginator(
             posts,
-            10,
+            5,
         )
-        page_number = self.request.GET.get("page") or 1
         page_obj = paginator.get_page(page_number)
         context[POSTS] = page_obj
         return context
@@ -226,18 +194,7 @@ class FacebookProfileView(TemplateView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context[USER] = User.objects.prefetch_related(FOLLOWERS, FOLLOWING).get(
-            username=kwargs.get(USER)
-        )
-        context[POSTS] = (
-            Post.objects.select_related(USER)
-            .prefetch_related(IMAGES)
-            .filter(user=context[USER])
-        )
-        context["saved_posts"] = (
-            Post.objects.select_related(USER)
-            .prefetch_related(IMAGES)
-            .filter(Q(user=context[USER]) & Q(saved__in=[context[USER].id]))
-            .distinct()
-        )
+        context[USER] = get_users_objects_with_all_related_fields_using_username(kwargs.get("user"))
+        context[POSTS] = users_posts(context[USER])
+        context[SAVED_POSTS] = saved_posts(context[USER])
         return context

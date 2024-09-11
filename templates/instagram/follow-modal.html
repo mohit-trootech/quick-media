@@ -1,4 +1,3 @@
-{% load custom_tags %}
 <div class="modal fade" id="followList" tabindex="-1" aria-labelledby="followListLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -43,7 +42,11 @@
                                 </div>
                                 <div>
                                     <button class="btn btn-primary followBtn text-capitalize" id="{{user.id}}">
-                                        {% is_following request.user user %}
+                                        {% if request.user in user.following.all%}
+                                        Following
+                                        {% else %}
+                                        Follow
+                                        {% endif %}
                                     </button>
                                 </div>
                             </div>

@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block title %}Facebook{% endblock %}
 {% block favicon %}
 <link rel="shortcut icon" href="{% static 'img/facebook.png' %}" type="image/x-icon">
 {% endblock %}
 
 {% block main-content %}
+{% for user in users_follow %}
+{%if request.user in user.followers.all%}
+{{user.followers.all}}
+{%endif%}
+{% endfor%}
 {% include 'facebook/nav.html' %}
 <div class="row m-0 p-0">
     <div class="col-md-4 d-none d-md-block">

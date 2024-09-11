@@ -10,6 +10,7 @@ from meta.utils.constants import (
     MetaModelsConstants,
     THUMBNAIL_PREVIEW_TAG,
     THUMBNAIL_PREVIEW_HTML,
+    ACTIVE, EMPTY_STR
 )
 from django.utils.html import format_html
 
@@ -20,6 +21,7 @@ class Post(TitleDescriptionModel, ActivatorModel, TimeStampedModel):
     )
     like = ManyToManyField(User, related_name=MetaModelsConstants.LIKES.value)
     saved = ManyToManyField(User, related_name=MetaModelsConstants.SAVES.value)
+
 
     def get_post_comments(self):
         return self.comment.all()

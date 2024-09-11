@@ -28,6 +28,7 @@
     </div>
     <div class="card-body">
         <div class="post-details">
+            
             {% if post.images.all.count > 1 %}
             {% include "instagram/image-carousel.html" %}
             {% else %}
@@ -38,12 +39,12 @@
             <div class="d-flex justify-content-between align-items-center my-3">
                 <div>
                     <a type="button" id="like-{{post.id}}" href="like/{{post.id}}"
-                        class="far btn btn-outline-primary {% post_liked_by_user request.user.id post %} text-decoration-none fa-heart me-3"></a>
+                        class="far btn btn-outline-primary {%if post in request.user.likes.all%}active{%endif%} text-decoration-none fa-heart me-3"></a>
                     <a type="button" href="#collapseComments_{{post.id}}" data-bs-toggle="collapse"
                         class="far btn btn-outline-primary active text-decoration-none fa-comment me-3"></a>
                 </div>
                 <a type="button" id="saved-{{post.id}}" href="bookmark/{{post.id}}"
-                    class="far btn btn-outline-primary {% post_saved_by_user request.user.id post %} text-decoration-none fa-bookmark"></a>
+                    class="far btn btn-outline-primary {%if post in request.user.saves.all%}active{%endif%} text-decoration-none fa-bookmark"></a>
             </div>
             <div class="description mb-3">
                 {% include "instagram/post-text-trunacate.html" with post=post %}

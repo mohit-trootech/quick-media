@@ -50,6 +50,13 @@ class User(AbstractUser):
     def get_saved_posts(self):
         return self.saves.all()
 
+    def get_mutual_friends(self, other_user):
+        self_following = set(self.following.all())
+        other_following = set(other_user.following.all())
+        mutual_friends = self_following.intersection(other_following)
+        return len(mutual_friends)
+        
+
     @property
     def thumbnail_preview(self):
         if self.profile:

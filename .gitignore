@@ -3,5 +3,5 @@ __pycache__
 .idea
 .env
 .venv
-responses
+.responses
 media/*

@@ -1,5 +1,5 @@
 <div class="row">
-    {% for post in request.user.get_saved_posts.all %}
+    {% for post in saved_posts %}
     {% if post.images.all %}
     <a class="m-0 p-0 col-sm-12 col-md-4 p-3 profile_posts" id="{{post.id}}">
         <div id="profile_feed_{{post.id}}" class="carousel slide" data-bs-ride="carousel">
