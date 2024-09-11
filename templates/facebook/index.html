@@ -16,11 +16,8 @@
         {% block content %}
         <div id="facebookMain">
             <div id="newPost"></div>
-            {% for post in posts %}
-            {% include "facebook/feeds-card.html" %}
+            {% include "facebook/home.html" %}
             <div id="newPagePosts"></div>
-            <a href="?page={{ posts.next_page_number }}" hidden class="hidden" id="infiniteScollingTrigger">next</a>
-            {% endfor %}
         </div>
         {% endblock %}
     </div>

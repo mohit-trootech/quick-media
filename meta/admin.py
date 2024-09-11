@@ -7,7 +7,9 @@ from django.utils.translation import gettext as _
 class PostAdmin(ModelAdmin):
     list_display = ["id", "title", "user"]
     search_fields = ("title", "user__username", "user__first_name")
-    readonly_fields = ["id"]
+    readonly_fields = [
+        "id",
+    ]
     ordering = ("id", "title")
     fieldsets = (
         (None, {"fields": ["id"]}),
@@ -32,9 +34,7 @@ class PostAdmin(ModelAdmin):
 class PostImageAdmin(ModelAdmin):
     list_display = ["id", "post__title"]
     search_fields = ("title", "post__title")
-    readonly_fields = [
-        "id",
-    ]
+    readonly_fields = ["id", "thumbnail_preview"]
     ordering = ["id"]
     fieldsets = (
         (None, {"fields": ["id"]}),
@@ -46,6 +46,10 @@ class PostImageAdmin(ModelAdmin):
                     "image",
                 ),
             },
+        ),
+        (
+            "Image Preview",
+            {"classes": ["collapse"], "fields": ["thumbnail_preview"]},
         ),
     )
 

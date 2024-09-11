@@ -12,7 +12,18 @@
                 {% endif %}
                 <strong>{{post.user.username}}</strong>
             </a>
-            <strong><i class="fas fa-ellipsis"></i></strong>
+            <div class="dropdown">
+                <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <strong><i class="fas fa-ellipsis"></i></strong>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item post-dropdown-item" href="javascript:void(0)"
+                            id="{{post.id}}">Delete</a></li>
+                    <li><a class="dropdown-item post-dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item post-dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+
         </div>
     </div>
     <div class="card-body">

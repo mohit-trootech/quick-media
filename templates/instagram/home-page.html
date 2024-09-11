@@ -1,1 +1,6 @@
+{% for post in posts %}
 {% include "instagram/feeds-card.html" with posts=posts %}
+{% endfor %}
+{% if posts.next_page_number %}
+<a href="?page={{ posts.next_page_number }}" hidden class="hidden infiniteScrollNotVisited" id="scrollTrigger">next</a>
+{% endif %}

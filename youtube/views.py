@@ -20,6 +20,7 @@ from youtube.utils.utils import (
 )
 from django.shortcuts import render
 from threading import Thread
+from django.core.paginator import Paginator
 
 
 class YoutubeHomeView(TemplateView):
@@ -31,25 +32,28 @@ class YoutubeHomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        search_value = self.request.GET.get(YoutubeApiConstants.SEARCH_VALUE.value)
+        search_value = (
+            self.request.GET.get(YoutubeApiConstants.SEARCH_VALUE.value) or None
+        )
         if search_value:
-            context[Constants.RELATED_VIDEOS_CONTEXT_NAME.value] = (
-                get_related_video_shuffled_data_based_on_search_query(
-                    search_value.lower()
-                )
+            videos_data = get_related_video_shuffled_data_based_on_search_query(
+                search_value.lower()
             )
         else:
             interests = get_user_interest(self.request.user)
             if interests is not None:
-                context[Constants.RELATED_VIDEOS_CONTEXT_NAME.value] = (
-                    get_related_video_shuffled_data_based_on_user_interest(
-                        interests=interests
-                    )
+                videos_data = get_related_video_shuffled_data_based_on_user_interest(
+                    interests=interests
                 )
             else:
-                context[Constants.RELATED_VIDEOS_CONTEXT_NAME.value] = (
-                    get_related_video_shuffled_data_complete()
-                )
+                videos_data = get_related_video_shuffled_data_complete()
+        paginator = Paginator(
+            videos_data,
+            18,
+        )
+        page_number = self.request.GET.get("page") or 1
+        page_obj = paginator.get_page(page_number)
+        context[Constants.RELATED_VIDEOS_CONTEXT_NAME.value] = page_obj
         task = Thread(target=handle_api_response)
         task.start()
         return context
@@ -82,9 +86,33 @@ class YoutubeRequestHandle(View):
 
     def get(self, request):
         context = {}
-        searchValue = self.request.GET.get(
-            YoutubeApiConstants.SEARCH_VALUE.value
-        ).lower()
+        searchValue = (
+            self.request.GET.get(YoutubeApiConstants.SEARCH_VALUE.value) or None
+        )
+        if self.request.GET.get("page"):
+            if searchValue:
+                videos_data = get_related_video_shuffled_data_based_on_search_query(
+                    searchValue.lower()
+                )
+            else:
+                interests = get_user_interest(self.request.user)
+                if interests is not None:
+                    videos_data = (
+                        get_related_video_shuffled_data_based_on_user_interest(
+                            interests=interests
+                        )
+                    )
+                else:
+                    videos_data = get_related_video_shuffled_data_complete()
+            paginator = Paginator(
+                videos_data,
+                18,
+            )
+            page_number = self.request.GET.get("page") or 1
+            page_obj = paginator.get_page(page_number)
+            context[Constants.RELATED_VIDEOS_CONTEXT_NAME.value] = page_obj
+            page = render(request, "youtube/videos.html", context)
+            return HttpResponse(page.content, status=200)
         context[Constants.RELATED_VIDEOS_CONTEXT_NAME.value] = (
             get_related_video_shuffled_data_based_on_search_query(searchValue)
         )

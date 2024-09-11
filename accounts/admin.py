@@ -11,7 +11,13 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ("username", "email", "first_name", "last_name", "is_active")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
     search_fields = ("username", "first_name", "last_name", "email")
-    readonly_fields = ["id", "password", "date_joined", "last_login"]
+    readonly_fields = [
+        "id",
+        "password",
+        "date_joined",
+        "last_login",
+        "thumbnail_preview",
+    ]
     ordering = ("username",)
     fieldsets = (
         (None, {"fields": ("username", "password")}),
@@ -49,6 +55,10 @@ class UserAdmin(admin.ModelAdmin):
                     "user_permissions",
                 ),
             },
+        ),
+        (
+            "Thumbnail Preview",
+            {"classes": ["collapse"], "fields": ["thumbnail_preview"]},
         ),
         (_("Joined & Login info"), {"fields": ("last_login", "date_joined")}),
     )

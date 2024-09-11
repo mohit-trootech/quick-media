@@ -1,8 +1,6 @@
 // const api = "e6ed093031474d538f6101732240905";
-
 $(document).ready(() => {
   $("#updateLocation").click(() => {
-    let addressInp = document.getElementById("id_address");
     function getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -24,7 +22,6 @@ $(document).ready(() => {
       console.log(addressInp);
       addressInp.value = `${address.location.name} ${address.location.region} ${address.location.country}`;
     }
-
     getLocation();
   });
 });

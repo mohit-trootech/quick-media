@@ -9,8 +9,14 @@ from django.db.models import (
 )
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
-from accounts.utils.constants import ModelConstants, Choices
+from accounts.utils.constants import (
+    ModelConstants,
+    Choices,
+    THUMBNAIL_PREVIEW_TAG,
+    THUMBNAIL_PREVIEW_HTML,
+)
 from youtube.models import Tag, Category
+from django.utils.html import format_html
 
 
 # Create your models here.
@@ -43,6 +49,12 @@ class User(AbstractUser):
 
     def get_saved_posts(self):
         return self.saves.all()
+
+    @property
+    def thumbnail_preview(self):
+        if self.profile:
+            return format_html(THUMBNAIL_PREVIEW_TAG.format(img=self.profile.url))
+        return format_html(THUMBNAIL_PREVIEW_HTML)
 
     def __str__(self):
         return "{username}".format(username=self.username)

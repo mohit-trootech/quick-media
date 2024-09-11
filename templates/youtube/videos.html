@@ -3,3 +3,6 @@
     {% include 'youtube/video-card.html' with video=video %}
 </div>
 {% endfor %}
+{% if videos.next_page_number %}
+<a href="?page={{videos.next_page_number}}" hidden class="hidden infiniteScrollNotVisited" id="scrollTrigger">next</a>
+{% endif %}

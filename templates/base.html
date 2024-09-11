@@ -19,8 +19,10 @@
     {% block main-content %}
     {% endblock %}
     {% include "required/error-message.html" %}
+    {% include "required/back-to-top.html" %}
 </body>
 {% block js %}{% endblock %}
 <script src="{% static 'js/index.js' %}"></script>
+<script src="{% static 'js/infinite-scroll.js' %}"></script>
 
 </html>

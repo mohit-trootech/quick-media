@@ -40,6 +40,10 @@ $(document).ready(() => {
     ajaxCall("PUT", data, url, getCsrf(), extraArguments);
   }
 
+  function deleteRequest(data, url) {
+    ajaxCall("DELETE", data, url, getCsrf());
+  }
+
   /* Ajax Call & Response Handling */
   function ajaxCall(type, data, url, csrfToken, extraArguments) {
     $.ajax({
@@ -53,22 +57,27 @@ $(document).ready(() => {
       contentType: false,
       enctype: "multipart/form-data",
       success: function (content, status, xhr) {
-        if (type != "PUT") {
-          if (xhr.status == 200) {
-            if (data.includes("page")) {
-              newPagePosts.innerHTML = content;
+        if (xhr.status != 204) {
+          if (type != "PUT") {
+            if (xhr.status == 200) {
+              if (data.includes("page")) {
+                newPagePosts.innerHTML += content;
+              } else {
+                newPost.innerHTML = content + newPost.innerHTML;
+              }
             } else {
-              newPost.innerHTML = content + newPost.innerHTML;
+              let newComment = $("#newComment-" + data.get("id"))[0];
+              let newCommentOffcanvas = $(
+                "#newCommentOffcavas-" + data.get("id")[0]
+              );
+              newComment.innerHTML = content + newComment.innerHTML;
+              newCommentOffcanvas.innerHTML =
+                content + newCommentOffcanvas.innerHTML;
             }
-          } else {
-            let newComment = $("#newComment-" + data.get("id"))[0];
-            let newCommentOffcanvas = $(
-              "#newCommentOffcavas-" + data.get("id")[0]
-            );
-            newComment.innerHTML = content + newComment.innerHTML;
-            newCommentOffcanvas.innerHTML =
-              content + newCommentOffcanvas.innerHTML;
           }
+        } else {
+          postId = JSON.parse(data).id;
+          $(`#post_${postId}`).hide(1000);
         }
         if (xhr.status == 205) {
           location.reload();
@@ -83,9 +92,7 @@ $(document).ready(() => {
         if (extraArguments) {
           btnDisableToggle(extraArguments);
         }
-        console.error(
-          `An Error Occured with Status ${status} ${xhr.status}, ${xhr.responseText}`
-        );
+        console.error(`An Error Occured with Status ${status} ${xhr.status}`);
         if (xhr.status == 403) {
           toastBody.innerHTML = xhr.responseText;
           myToast.show();
@@ -168,9 +175,7 @@ $(document).ready(() => {
         postModalElem.show();
       },
       error: function (xhr, error, status) {
-        console.error(
-          `An Error Occured with Status ${status} ${xhr.status}, ${xhr.responseText}`
-        );
+        console.error(`An Error Occured with Status ${status} ${xhr.status}`);
       },
     });
   }
@@ -189,14 +194,28 @@ $(document).ready(() => {
   });
 
   /* Infinite Scrolling */
-
-  $(document).scroll(function () {
-    if (
-      $(window).scrollTop() + $(window).height() >=
-      $(document).height() - $(window).height()
-    ) {
-      let search = $("#infiniteScollingTrigger")[0].search.slice(1);
-      ajaxCall("GET", search, ajaxUrl, getCsrf());
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY || window.pageYOffset;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    if (scrollTop + windowHeight + 1 >= documentHeight) {
+      if ($(".infiniteScrollNotVisited").length == 1) {
+        let search = $(".infiniteScrollNotVisited")[0].search.slice(1);
+        ajaxCall("GET", search, ajaxUrl, getCsrf());
+        updateTriggerClassCss();
+      }
     }
+  });
+  function updateTriggerClassCss() {
+    const scrollElem = $(".infiniteScrollNotVisited");
+    scrollElem.removeClass("infiniteScrollNotVisited");
+    scrollElem.addClass("infiniteScrollVisited");
+  }
+  /* Delete Post */
+  $(".post-dropdown-item").click((event) => {
+    event.preventDefault();
+    postId = event.target.id;
+    data = { id: postId, type: "delete" };
+    deleteRequest(JSON.stringify(data), ajaxUrl);
   });
 });

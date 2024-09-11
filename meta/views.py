@@ -54,12 +54,19 @@ class Instagram(TemplateView):
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context[POSTS] = (
+        posts = (
             Post.objects.select_related(USER)
-            .prefetch_related(LIKE, SAVED, IMAGES, COMMENTS)
+            .prefetch_related(IMAGES, COMMENTS, LIKE, SAVED)
             .all()
             .distinct()
         )
+        paginator = Paginator(
+            posts,
+            5,
+        )
+        page_number = self.request.GET.get("page") or 1
+        page_obj = paginator.get_page(page_number)
+        context[POSTS] = page_obj
         return context
 
 
@@ -131,6 +138,18 @@ class AjaxUpdate(View):
             else:
                 return HttpResponse(status=400)
         except Exception as e:
+            return HttpResponse(status=500)
+
+    def delete(self, request):
+        try:
+            import json
+
+            data = json.loads(request.body)
+            post_id = data.get(ID)
+            post = get_post_with_id(id=post_id)
+            post.delete()
+            return HttpResponse(status=204)
+        except Exception:
             return HttpResponse(status=500)
 
 

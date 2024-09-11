@@ -6,7 +6,12 @@ from django_extensions.db.models import (
     ActivatorModel,
     TimeStampedModel,
 )
-from meta.utils.constants import MetaModelsConstants
+from meta.utils.constants import (
+    MetaModelsConstants,
+    THUMBNAIL_PREVIEW_TAG,
+    THUMBNAIL_PREVIEW_HTML,
+)
+from django.utils.html import format_html
 
 
 class Post(TitleDescriptionModel, ActivatorModel, TimeStampedModel):
@@ -33,6 +38,12 @@ class PostImage(Model):
     image = ImageField(
         null=True, blank=True, upload_to=MetaModelsConstants.POST_IMAGE_UPLOAD_TO.value
     )
+
+    @property
+    def thumbnail_preview(self):
+        if self.post.image:
+            return format_html(THUMBNAIL_PREVIEW_TAG.format(img=self.post.image.url))
+        return format_html(THUMBNAIL_PREVIEW_HTML)
 
     def __str__(self):
         return "{post} image".format(post=self.post)
